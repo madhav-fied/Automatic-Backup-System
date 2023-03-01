@@ -1,0 +1,13 @@
+#!/bin/bash
+echo ""
+echo ""
+echo "                ░█████╗░██████╗░░██████╗"
+echo "                ██╔══██╗██╔══██╗██╔════╝"
+echo "                ███████║██████╦╝╚█████╗░"
+echo "                ██╔══██║██╔══██╗░╚═══██╗"
+echo "                ██║░░██║██████╦╝██████╔╝"
+echo "                ╚═╝░░╚═╝╚═════╝░╚═════╝░"
+echo ""
+echo ""
+echo "   Welcome to Automatic backup Setup v1.0.0 that helps you to set up your automatic backup tasks."
+exec "./setup.sh"
