@@ -1,22 +1,47 @@
 #!/bin/bash
 
-while [ 0 -le 1 ]
+
+ARG_ARRAY="$@"
+SRC=''
+DEST=''
+REGEX="-([a-zA-Z])"
+
+
+for ARG in ${ARG_ARRAY}
 do
-    echo -n "abs > "
-    read -r COMMAND
-    COMMAND=($COMMAND)
-    if [ ${COMMAND[0]} == 'setup' ] 
-    then
-        DIRECTORY=${COMMAND[1]}
-        BACKUP_DIRECTORY=${COMMAND[2]}
-        echo "exec rsync -a ${COMMAND[1]}/ ${COMMAND[2]}/" >> backup_config.sh
-    elif [ ${COMMAND[0]} == 'rm' ]
-    then 
-       read 
-    elif [ ${COMMAND[0]} == 'exit' ]
-    then 
-       break
-    else 
-        echo "Error, For the list of commands kindly help command"  
-    fi
+   if [[ $ARG == "setup" ]]
+   then
+   	 ./init.sh
+   	 echo "Backups planned are listed :";
+   	 cat "$PWD/backup_config.sh";	
+   	 exit
+   elif [[ $ARG =~ $REGEX ]]
+   then
+   	FLAGS=${BASH_REMATCH[1]}
+   elif [ -z $SRC ]
+   then
+   	src=$arg
+   elif [ -z $DEST ]
+   then
+   	DEST=$ARG
+   fi
 done
+
+
+if [[ $FLAGS == 'a' || $FLAGS == 'A' ]]
+then 
+	echo "rsync -a $SRC $DEST" >> "$PWD/backup_config.sh"        
+elif [[ $FLAGS == 'r' || $FLAGS == 'R' ]]
+then
+	echo ' '
+elif [[ -n $FLAG ]]
+then
+	echo "Available Flags are -a and -r"
+fi
+   	
+   
+	
+
+
+
+
