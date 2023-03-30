@@ -1,11 +1,9 @@
 #!/bin/bash
 
-
 ARG_ARRAY="$@"
-SRC=''
-DEST=''
+DIR1=''
+DIR2=''
 REGEX="-([a-zA-Z])"
-
 
 for ARG in ${ARG_ARRAY}
 do
@@ -18,22 +16,28 @@ do
    elif [[ $ARG =~ $REGEX ]]
    then
    	FLAGS=${BASH_REMATCH[1]}
-   elif [ -z $SRC ]
+   elif [ -z $DIR1 ]
    then
-   	src=$arg
-   elif [ -z $DEST ]
+   	DIR1=$ARG
+   elif [ -z $DIR2 ]
    then
-   	DEST=$ARG
+   	DIR2=$ARG
    fi
 done
 
+# DIR 1 -> SRC
+# DIR 2 -> DEST
 
 if [[ $FLAGS == 'a' || $FLAGS == 'A' ]]
 then 
-	echo "rsync -a $SRC $DEST" >> "$PWD/backup_config.sh"        
+	echo "rsync -a $DIR1 $DIR2" >> "$PWD/backup_config.sh"        
 elif [[ $FLAGS == 'r' || $FLAGS == 'R' ]]
 then
-	echo ' '
+	DIR_TO_REMOVE=$DIR1
+	sed -i "$DIR_TO_REMOVE/d" "$PWD/backup_config.sh"
+elif [[ $FLAGS == 'l' || $FLAGS == 'L' ]]
+then
+	cat "$PWD/backup_config.sh" | grep -v bin | sed 's/rsync -a//'
 elif [[ -n $FLAG ]]
 then
 	echo "Available Flags are -a and -r"
