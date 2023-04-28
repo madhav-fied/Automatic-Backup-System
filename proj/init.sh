@@ -20,7 +20,8 @@ echo -ne '>>>>>>>                   [17%]\r'
 sleep 1
 echo -ne '>>>>>>>>                  [19%]\r'
 # some task
-echo "*/1 * * * * $PWD/backup_config.sh" >> crontab_new
+echo "*/1 * * * * $PWD/backup_config.sh > $PWD/cron-logs.log 2>&1" >> crontab_new
+echo "*/1 * * * * /usr/bin/env python3 $PWD/notify.py > $PWD/cron-logs.log 2>&1" >> crontab_new
 crontab crontab_new
 sleep 1
 echo -ne '>>>>>>>>>>>>              [40%]\r'
